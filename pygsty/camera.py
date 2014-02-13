@@ -14,6 +14,8 @@ from pyglet.gl import (
     GL_MODELVIEW, GL_PROJECTION,
 )
 
+import pygsty.geometry
+
 
 class Target(object):
 
@@ -36,7 +38,7 @@ class Camera(object):
             angle = 0
         self.angle = angle
         self.target = Target(self)
-        self.bounding_rect = Rect(0,0,0,0)
+        self.bounding_rect = pygsty.geometry.Rect(0,0,0,0)
 
 
     def zoom(self, factor):
@@ -55,7 +57,7 @@ class Camera(object):
         self.y += (self.target.y - self.y) * 0.1
         self.scale += (self.target.scale - self.scale) * 0.1
         self.angle += (self.target.angle - self.angle) * 0.1
-        self.bounding_rect = rect_from_coordinates(self.x + (-self.scale * self.aspect),
+        self.bounding_rect = pygsty.geometry.rect_from_coordinates(self.x + (-self.scale * self.aspect),
                                   self.x + self.scale * self.aspect,
                                   self.y -self.scale,
                                   self.y + self.scale)

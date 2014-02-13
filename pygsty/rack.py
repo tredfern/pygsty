@@ -2,6 +2,7 @@ import pyglet
 from math import pi
 from pyglet.gl import *
 from pyglet.window import key
+import pygsty.camera
 
 class Rack(pyglet.window.Window):
   def __init__(self):
