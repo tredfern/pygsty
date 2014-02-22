@@ -1881,6 +1881,18 @@ class Circle(Geometry):
     def _connect_circle(self, other):
         return _connect_circle_circle(other, self)
 
+    #Circle Extensions
+    def overlap(self, circle):
+      distance = self.c.distance(circle.c)
+      return distance < self.r + circle.r
+
+    def contains_point(self, point):
+      if point == self.c:
+        return True
+
+      distance = self.c.distance(point)
+      return distance < self.r
+
 # 3D Geometry
 # -------------------------------------------------------------------------
 
@@ -2327,3 +2339,6 @@ class Plane:
     def _connect_plane(self, other):
         return _connect_plane_plane(other, self)
 
+
+def angle_length_to_vector2(angle, length):
+  return Vector2(math.cos(math.radians(angle)) * length, math.sin(math.radians(angle)) * length)

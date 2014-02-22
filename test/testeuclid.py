@@ -1,6 +1,5 @@
 import unittest
-from euclid import *
-from pygsty.euclidextensions import * 
+from pygsty.euclid import *
 
 
 class TestCircleExtensions(unittest.TestCase):

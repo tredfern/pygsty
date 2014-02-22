@@ -1,4 +1,4 @@
-from euclid import *
+from pygsty.euclid import *
 
 def rect_from_coordinates(left, right, bottom, top):
   return Rect(left, bottom, right-left, top-bottom)
