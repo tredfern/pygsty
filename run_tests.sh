@@ -1,1 +1,1 @@
-python3 -m unittest discover -s test -v 
+nosetests --verbosity=3 --rednose

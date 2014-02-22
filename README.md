@@ -1,22 +1,11 @@
 Pyglet on Rails, Kinda
 ======================
 
-PoRK is a pretty strange idea I had after drinking a bunch of wine and
-waking up early in the morning with a dull throb in my head. I was 
-thinking of Terralien and wondering if I was overbuilding things and that
-maybe there was a game engine out there I could use when I realized what
-I hated about game engines. They all seem to force you to think heavily
-about the engine and line things up in the way they expect.
-
-Maybe it's for performance, but in reality performance isn't what hurts
-games today it's gameplay and stability. If games could be more testable
-and constructed in a fashion focusing on game logic (recognize that from
-business logic?) maybe things would be easier to build and provide more
-focus on what we are building instead of what we are drawing.
-
-Of course, there needs to be a certain amount of performance and ultimately
-python may be too slow for constructing a project in this fashion but I'm
-willing to stupidly plow ahead and see where I end up.
+Pygsty is a pretty strange idea I had after drinking a bunch of wine and
+waking up early in the morning with a dull throb in my head. The basic 
+concept is to organize the framework in an MVC kind of format in order
+to allow game logic and interaction to rise to the surface of an actual
+game project. Similar to what Rails has done in web applications. 
 
 I'm going to follow the principles of convention over configuration, DRY,
 and also the testability of game logic by removing complexities that rendering
@@ -41,9 +30,26 @@ be flexible in the definition but we are still segmenting things that are
 drawn to here. This is the visualization of your game. Might include sound
 for the aural view.
 
-PorkRack
+PygstyRack
 --------
 
 The backend engine. Ok, maybe having too much fun with sharing terminology,
 but here is where the engine is really running and utilizes your controllers
 to provide input about what is happening on the current state of your game.
+
+Development
+-----------
+
+Python frightens and confuses me at this point. Here are the steps I think 
+necessary to use and work with the code
+
+For the main requirements
+
+    pip install -r Packages
+
+For the development requirements
+
+    pip install -r Development
+
+Unit testing is just unittest/nosetests/rednose 
+
