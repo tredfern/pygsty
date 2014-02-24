@@ -1,6 +1,12 @@
 import pygsty.euclid
 import pyglet.graphics
 
+
+default_batch = pyglet.graphics.Batch()
+
+def render_models():
+    default_batch.draw()
+
 class BaseModel():
     def __init__(self):
         self.moveTo(0, 0)
@@ -35,7 +41,12 @@ class VisibleModel(BaseModel):
     def __init__(self):
         super().__init__()
         self._render_group = VisibleModelGroup(self)
+        self._batch = default_batch
 
     @property
     def render_group(self):
         return self._render_group
+
+    @property
+    def batch(self):
+        return self._batch

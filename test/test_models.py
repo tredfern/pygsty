@@ -29,6 +29,9 @@ class TestVisibleModel(unittest.TestCase):
         model = pygsty.models.VisibleModel()
         self.assertEqual( model.render_group.model, model)
         
+    def test_models_start_in_the_default_batch(self):
+        model = pygsty.models.VisibleModel()
+        self.assertEqual( model.batch, pygsty.models.default_batch )
 
 
 
