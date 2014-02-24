@@ -6,6 +6,7 @@ import pygsty
 import pygsty.rack
 import pygsty.controllers
 import pygsty.camera
+import pygsty.utils
 
 pygsty_globals = { 
     'rack' : None,
