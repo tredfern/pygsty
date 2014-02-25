@@ -39,6 +39,7 @@ class Camera(object):
         self.angle = angle
         self.target = Target(self)
         self.bounding_rect = pygsty.geometry.Rect(0,0,0,0)
+        self.aspect = 0;
 
 
     def zoom(self, factor):

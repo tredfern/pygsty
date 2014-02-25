@@ -5,6 +5,7 @@ from pyglet.window import key
 import pygsty
 import pygsty.rack
 import pygsty.controllers
+import pygsty.models
 import pygsty.camera
 import pygsty.utils
 

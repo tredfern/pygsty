@@ -41,3 +41,37 @@ class TestShape(unittest.TestCase):
         self.shape.add_primitive(p)
         self.assertEqual( self.shape.primitives, [ p ] )
 
+    def test_it_adds_all_the_primitives_to_a_batch(self):
+        v = (20, 30), (40, 10)
+        p = pygsty.graphics.Primitive(v, (255, 255, 255, 255), pyglet.gl.GL_POINTS)
+        self.shape.add_primitive(p)
+
+        p2 = pygsty.graphics.Primitive(v, (255, 255, 255, 255), pyglet.gl.GL_POINTS)
+        self.shape.add_primitive(p2)
+
+        batch = pyglet.graphics.Batch()
+        self.shape.add_to_batch(batch)
+
+
+class TestRectangle(unittest.TestCase):
+    def test_it_is_set_up_by_two_points(self):
+        r = pygsty.graphics.Rectangle((20, 30), (50, 50))
+        self.assertEqual(r.right, 50)
+        self.assertEqual(r.bottom, 50)
+        self.assertEqual(r.width, 30)
+        self.assertEqual(r.height, 20)
+
+    def test_it_can_generate_a_primitive_from_its_location(self):
+        r = pygsty.graphics.Rectangle((1, 1), (2, 2))
+        p = r.to_primitive((255, 255, 255, 255))
+        self.assertEqual(p.vertices, ((1, 1), (1, 2), (2, 2), (2, 1)) )
+
+    def test_two_rectangles_in_the_same_spot_and_size_are_equal(self):
+        r1 = pygsty.graphics.Rectangle((1, 1), (2, 2))
+        r2 = pygsty.graphics.Rectangle((1, 1), (2, 2))
+        self.assertEqual(r1, r2)
+
+    def test_two_rectangles_in_different_spots_are_not_equal(self):
+        r1 = pygsty.graphics.Rectangle((1, 1), (2, 2))
+        r2 = pygsty.graphics.Rectangle((2, 2), (1, 1))
+        self.assertNotEqual(r1, r2)
