@@ -8,7 +8,6 @@ class Rack(pyglet.window.Window):
   def __init__(self):
     super(Rack, self).__init__(800, 600)
     self._controllers = []
-    self.camera = pygsty.camera.Camera((100, 100), 100)
 
   def push_controller(self, c):
     self._controllers.append(c)
@@ -17,7 +16,6 @@ class Rack(pyglet.window.Window):
     return self._controllers.pop()
 
   def update(self, dt):
-    self.camera.update()
     for c in self._controllers:
       c.update(dt)
     
@@ -25,25 +23,16 @@ class Rack(pyglet.window.Window):
   def on_draw(self):
     self.clear()
 
-    self.camera.focus(self.width, self.height)
+    for c in self._controllers:
+      c.prepare_draw()
+
     for c in self._controllers:
       c.draw()
 
-    self.camera.hud_mode(self.width, self.height)
     for c in self._controllers:
       c.draw_hud()
 
   def on_key_press(self, symbol, modifiers):
-    if symbol == key.LEFT:
-      self.camera.pan(self.camera.scale, -pi/2)
-    elif symbol == key.RIGHT:
-      self.camera.pan(self.camera.scale, pi/2)
-    elif symbol == key.DOWN:
-      self.camera.pan(self.camera.scale, pi)
-    elif symbol == key.UP:
-      self.camera.pan(self.camera.scale, 0)
-    elif symbol == key.PAGEUP:
-      self.camera.zoom(2)
-    elif symbol == key.PAGEDOWN:
-      self.camera.zoom(0.5)
-    return
+      for c in self._controllers:
+          if c.on_key_press(symbol, modifiers):
+              break

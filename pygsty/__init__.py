@@ -19,6 +19,10 @@ def start():
 
 def engine():
   return pygsty_globals['rack'];
+
+def window_resolution():
+    return (engine().width, engine().height)
+
   
 def run():
   pyglet.clock.schedule_interval(pygsty_globals['rack'].update, 1/60.)
