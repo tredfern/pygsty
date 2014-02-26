@@ -14,14 +14,17 @@ pygsty_globals = {
     'default_font' : 'Tahoma'
     } 
 
-def start():
-  pygsty_globals['rack'] = pygsty.rack.Rack()
+def start(width=800, height=600, fullscreen=False):
+  pygsty_globals['rack'] = pygsty.rack.Rack(width, height, fullscreen)
 
 def engine():
   return pygsty_globals['rack'];
 
 def window_resolution():
     return (engine().width, engine().height)
+
+def stop():
+    engine().close()
 
   
 def run():

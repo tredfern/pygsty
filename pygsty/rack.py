@@ -2,11 +2,10 @@ import pyglet
 from math import pi
 from pyglet.gl import *
 from pyglet.window import key
-import pygsty.camera
 
 class Rack(pyglet.window.Window):
-  def __init__(self):
-    super(Rack, self).__init__(800, 600)
+  def __init__(self, width, height, fullscreen):
+    super().__init__(width=width, height=height, fullscreen=fullscreen)
     self._controllers = []
 
   def push_controller(self, c):
