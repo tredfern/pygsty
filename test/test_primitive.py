@@ -64,7 +64,7 @@ class TestRectangle(unittest.TestCase):
     def test_it_can_generate_a_primitive_from_its_location(self):
         r = pygsty.graphics.Rectangle((1, 1), (2, 2))
         p = r.to_primitive((255, 255, 255, 255))
-        self.assertEqual(p.vertices, ((1, 1), (1, 2), (2, 2), (2, 1)) )
+        self.assertEqual(p.vertices, ((1, 1), (2, 1), (1, 2), (2, 2)) )
 
     def test_two_rectangles_in_the_same_spot_and_size_are_equal(self):
         r1 = pygsty.graphics.Rectangle((1, 1), (2, 2))

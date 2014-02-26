@@ -6,13 +6,25 @@ class Primitive():
     # Stores a list of vertices and color information 
     # This allows us to convert it into OpenGL batch information easily
     def __init__(self, verts, color, primitive_type):
-        self.vertices = verts
-        self.color = color
-        self.primitive_type = primitive_type
+        self._vertices = verts
+        self._color = color
+        self._primitive_type = primitive_type
 
     @property
     def vertices_length(self):
         return len(self.vertices)
+
+    @property
+    def vertices(self):
+        return self._vertices
+
+    @property
+    def color(self):
+        return self._color
+
+    @property
+    def primitive_type(self):
+        return self._primitive_type
 
     def flatten_vertices(self):
         return pygsty.utils.flatten(self.vertices)
@@ -24,6 +36,21 @@ class Primitive():
                 group,
                 ('v2f', self.flatten_vertices()),
                 ('c4B', self.color * self.vertices_length) )
+
+class IndexedPrimitive(Primitive):
+    def __init__(self, verts, indices, color, primitive_type):
+        super().__init__(verts, color, primitive_type)
+        self.indices = indices
+
+    def add_to_batch(self, batch, group=None):
+        return batch.add_indexed(
+                self.vertices_length,
+                self.primitive_type,
+                group,
+                self.indices,
+                ('v2f', self.flatten_vertices()),
+                ('c4B', self.color * self.vertices_length) )
+
 
 class Rectangle():
     def __init__(self, top_left, bottom_right):
@@ -55,9 +82,9 @@ class Rectangle():
         return self.bottom - self.top
 
     def to_primitive(self, color):
-        verts = (self.left, self.top), (self.left, self.bottom),  \
-                    (self.right, self.bottom), (self.right, self.top)
-        return Primitive(verts, color, pyglet.gl.GL_TRIANGLE_STRIP)
+        verts = (self.left, self.top), (self.right, self.top),  \
+                    (self.left, self.bottom), (self.right, self.bottom)
+        return IndexedPrimitive(verts, [0,1,2,1,2,3], color, pyglet.gl.GL_TRIANGLES)
 
     def __eq__(self, other):
         if isinstance(other, self.__class__):
