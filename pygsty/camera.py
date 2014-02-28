@@ -39,7 +39,6 @@ class Camera(object):
             angle = 0
         self.angle = angle
         self.target = Target(self)
-        self.bounding_rect = pygsty.geometry.Rect(0,0,0,0)
         self.aspect = 0;
 
 
@@ -59,10 +58,6 @@ class Camera(object):
         self.y += (self.target.y - self.y) * 0.1
         self.scale += (self.target.scale - self.scale) * 0.1
         self.angle += (self.target.angle - self.angle) * 0.1
-        self.bounding_rect = pygsty.geometry.rect_from_coordinates(self.x + (-self.scale * self.aspect),
-                                  self.x + self.scale * self.aspect,
-                                  self.y -self.scale,
-                                  self.y + self.scale)
 
 
     def focus(self, width, height):

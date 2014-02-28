@@ -9,7 +9,7 @@ import pygsty
 
 mock_cam = Mock()
 
-def mock_init(self):
+def mock_init(self, width, height, fullscreen):
   self._controllers = []
   self.camera = mock_cam.return_value
 
@@ -17,7 +17,7 @@ pygsty.rack.Rack.__init__ = mock_init
 
 class TestRackControllerManagement(unittest.TestCase):
   def setUp(self):
-    self.rack = pygsty.rack.Rack()
+    self.rack = pygsty.rack.Rack(800, 600, False)
 
   def test_you_can_push_controllers_onto_the_stack(self):
     c1 = pygsty.controllers.BaseController()

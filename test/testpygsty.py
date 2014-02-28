@@ -8,4 +8,4 @@ class TestPork(unittest.TestCase):
     r = mock_rack.return_value
     pygsty.start()
     self.assertEqual(pygsty.engine(), r)
-    mock_rack.assert_called_with()
+    mock_rack.assert_called_with(800, 600, False)
