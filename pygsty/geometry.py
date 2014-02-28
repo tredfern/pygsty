@@ -1,7 +1,7 @@
 from pygsty.euclid import *
 
-def rect_from_coordinates(left, right, bottom, top):
-  return Rect(left, bottom, right-left, top-bottom)
+def rect_from_coordinates(left, top, right, bottom):
+  return Rect(left, top , right-left, bottom-top)
 
 class Rect():
     def __init__(self, x, y, width, height):
@@ -25,7 +25,7 @@ class Rect():
 
     @property
     def bottom(self):
-        return self.y
+        return self.y + self.height
 
     @property
     def right(self):
@@ -37,7 +37,7 @@ class Rect():
 
     @property
     def top(self):
-        return self.y + self.height
+        return self.y 
 
     def intersects(self, other):
         return not (self.x > other.right or

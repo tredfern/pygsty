@@ -2,8 +2,8 @@ import pyglet.gl
 import pygsty.utils
 
 def rect_to_primitive(rect, color):
-    verts = (rect.left, rect.bottom), (rect.right, rect.bottom),  \
-                (rect.left, rect.top), (rect.right, rect.top)
+    verts = (rect.left, rect.top), (rect.right, rect.top),  \
+                (rect.left, rect.bottom), (rect.right, rect.bottom)
     return IndexedPrimitive(verts, [0,1,2,1,2,3], color, pyglet.gl.GL_TRIANGLES)
 
 class Primitive():
