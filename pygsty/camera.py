@@ -10,12 +10,13 @@ from __future__ import division
 from math import sin, cos
 
 from pyglet.gl import (
-    glLoadIdentity, glMatrixMode, gluLookAt, gluOrtho2D,
-    GL_MODELVIEW, GL_PROJECTION,
+    glLoadIdentity, glMatrixMode, gluLookAt, gluOrtho2D, glDepthFunc,
+    GL_MODELVIEW, GL_PROJECTION, GL_NEVER
 )
 
 import pygsty.geometry
 
+glDepthFunc(GL_NEVER)
 
 class Target(object):
 
