@@ -45,5 +45,12 @@ class Rect():
             self.y > other.top or
             self.top < other.y)
 
-    def inspect(self):
-        return "Rect({}, {}, {}, {})".format(self.x, self.y, self.width, self.height)
+    def __eq__(self, other):
+        return (isinstance(other, self.__class__)
+            and self.__dict__ == other.__dict__)
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __repr__(self):
+        return "Rect( L:{}, T:{}, R:{}, B:{} )".format(self.left, self.top, self.right, self.bottom)
