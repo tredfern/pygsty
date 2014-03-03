@@ -1735,6 +1735,9 @@ class Point2(Vector2, Geometry):
         c = _connect_point2_circle(self, other)
         if c:
             return c._swap()
+    
+    def __hash__(self):
+        return hash((self.x, self.y))
 
 class Line2(Geometry):
     __slots__ = ['p', 'v']

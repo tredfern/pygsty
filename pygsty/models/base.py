@@ -24,8 +24,6 @@ class BaseModel():
     def y(self):
         return self._position.y
 
-
-
     def moveTo(self, x, y):
         self._position = pygsty.euclid.Point2(x, y)
     
