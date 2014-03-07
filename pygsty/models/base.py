@@ -1,8 +1,8 @@
 import pygsty.euclid
+import pygsty.graphics
 import pyglet.graphics
 
-
-default_batch = pyglet.graphics.Batch()
+default_batch = pygsty.graphics.batches.create_batch()
 
 def render_models():
     default_batch.draw()
@@ -26,7 +26,7 @@ class BaseModel():
 
     def moveTo(self, x, y):
         self._position = pygsty.euclid.Point2(x, y)
-    
+
 
 class VisibleModelGroup(pyglet.graphics.Group):
     def __init__(self, model):
@@ -37,7 +37,7 @@ class VisibleModelGroup(pyglet.graphics.Group):
         pyglet.gl.glPushMatrix()
         pyglet.gl.glTranslatef(self.model.screen_x, self.model.screen_y, 0)
         pyglet.gl.glRotatef(self.model.rotation, 0, 0, 1)
-       
+
     def unset_state(self):
         pyglet.gl.glPopMatrix()
 

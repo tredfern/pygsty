@@ -9,10 +9,12 @@ import pygsty.models
 import pygsty.camera
 import pygsty.utils
 
-pygsty_globals = { 
+from pygsty.utils import logger
+
+pygsty_globals = {
     'rack' : None,
     'default_font' : 'Tahoma'
-    } 
+    }
 
 def start(width=800, height=600, fullscreen=False):
   pygsty_globals['rack'] = pygsty.rack.Rack(width, height, fullscreen)
@@ -26,7 +28,7 @@ def window_resolution():
 def stop():
     engine().close()
 
-  
+
 def run():
   pyglet.clock.schedule_interval(pygsty_globals['rack'].update, 1/60.)
   pyglet.app.run()
