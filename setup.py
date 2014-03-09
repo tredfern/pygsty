@@ -8,5 +8,5 @@ setup(name='pygsty',
         author='Trevor Redfern',
         author_email='trevorredfern@gmail.com',
         license='MIT',
-        packages=['pygsty'],
+        packages=['pygsty', 'pygsty.graphics'],
         zip_safe=False)
