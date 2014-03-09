@@ -3,6 +3,9 @@ from math import pi
 from pyglet.gl import *
 from pyglet.window import key
 
+glEnable(GL_BLEND)
+glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+
 class Rack(pyglet.window.Window):
   def __init__(self, width, height, fullscreen):
     super().__init__(width=width, height=height, fullscreen=fullscreen)
@@ -17,7 +20,7 @@ class Rack(pyglet.window.Window):
   def update(self, dt):
     for c in self._controllers:
       c.update(dt)
-    
+
 
   def on_draw(self):
     self.clear()
