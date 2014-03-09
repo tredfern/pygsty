@@ -32,7 +32,7 @@ class TestVisibleModel(unittest.TestCase):
     def test_model_group_is_set_to_the_model_in_question(self):
         model = pygsty.models.VisibleModel()
         self.assertEqual( model.render_group.model, model)
-        
+
     def test_models_start_in_the_default_batch(self):
         model = pygsty.models.VisibleModel()
         self.assertEqual( model.batch, pygsty.models.default_batch )
@@ -43,3 +43,5 @@ class TestVisibleModel(unittest.TestCase):
         self.assertEqual(model.screen_x, 30 )
         self.assertEqual(model.screen_y, 40 )
 
+class TestSpriteModel(unittest.TestCase):
+    pass
