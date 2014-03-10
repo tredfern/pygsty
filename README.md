@@ -1,6 +1,8 @@
 Pyglet on Rails, Kinda
 ======================
 
+[![Build Status](https://travis-ci.org/tredfern/pygsty.png?branch=master)](https://travis-ci.org/tredfern/pygsty)
+
 *Temporarily all development is being done to support the terralien project.*
 
 Pygsty is a pretty strange idea I had after drinking a bunch of wine and
