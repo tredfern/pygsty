@@ -14,14 +14,39 @@ def track_model(m):
 def remove_model(m):
     model_list.remove(m)
 
+def background():
+    return pygsty.graphics.background_group
+
+def middle():
+    return pygsty.graphics.middleground_group
+
+def foreground():
+    return pygsty.graphics.foreground_group
+
 class BaseModel():
     def __init__(self, position=(0,0)):
         self.moveTo(position[0], position[1])
         track_model(self)
         self._batch = model_batch
+        self._sprite = None
 
     def kill(self):
         remove_model(self)
+        if self.sprite:
+            self.sprite.delete()
+
+    def initSprite(self, image, group):
+        self._sprite = pyglet.sprite.Sprite(
+            image,
+            x = self.x,
+            y = self.y,
+            batch = self.batch,
+            group = group
+        )
+
+    @property
+    def sprite(self):
+        return self._sprite
 
     @property
     def position(self):

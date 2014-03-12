@@ -1,5 +1,13 @@
 import unittest
 import pygsty.models
+import pyglet
+from mock import MagicMock
+
+class MockSprite():
+    def __init__(self, image, x, y, batch, group):
+        self.group = group
+
+pyglet.sprite.Sprite = MockSprite
 
 class TestBaseModel(unittest.TestCase):
     def test_models_start_at_position_zero_zero(self):
@@ -30,5 +38,15 @@ class TestBaseModel(unittest.TestCase):
         m.kill()
         self.assertTrue(m not in pygsty.models.model_list)
 
-class TestSpriteModel(unittest.TestCase):
-    pass
+    def test_you_can_set_the_image_and_the_layer_you_are_on(self):
+        m = pygsty.models.BaseModel()
+        image = pyglet.image.AbstractImage(32, 32)
+        m.initSprite(image, pygsty.models.background())
+        self.assertEqual(m.sprite.group, pygsty.graphics.background_group)
+
+    def test_it_removes_the_sprite_if_the_model_is_killed(self):
+        m = pygsty.models.BaseModel()
+        m.initSprite("some image", pygsty.models.background())
+        m.sprite.delete = MagicMock()
+        m.kill()
+        self.assertTrue(m.sprite.delete.called, "Sprite not cleaned up")
