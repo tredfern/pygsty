@@ -2,15 +2,26 @@ import pygsty.euclid
 import pygsty.graphics
 import pyglet.graphics
 
-default_batch = pygsty.graphics.batches.create_batch()
+model_batch = pygsty.graphics.batches.create_batch()
+model_list = set()
 
 def render_models():
-    default_batch.draw()
+    model_batch.draw()
+
+def track_model(m):
+    model_list.add(m)
+
+def remove_model(m):
+    model_list.remove(m)
 
 class BaseModel():
     def __init__(self, position=(0,0)):
         self.moveTo(position[0], position[1])
-        self.rotation = 0
+        track_model(self)
+        self._batch = model_batch
+
+    def kill(self):
+        remove_model(self)
 
     @property
     def position(self):
@@ -27,38 +38,6 @@ class BaseModel():
     def moveTo(self, x, y):
         self._position = pygsty.euclid.Point2(x, y)
 
-
-class VisibleModelGroup(pyglet.graphics.Group):
-    def __init__(self, model):
-        super().__init__()
-        self.model = model
-
-    def set_state(self):
-        pyglet.gl.glPushMatrix()
-        pyglet.gl.glTranslatef(self.model.screen_x, self.model.screen_y, 0)
-        pyglet.gl.glRotatef(self.model.rotation, 0, 0, 1)
-
-    def unset_state(self):
-        pyglet.gl.glPopMatrix()
-
-class VisibleModel(BaseModel):
-    def __init__(self, position=(0, 0)):
-        super().__init__(position = position)
-        self._render_group = VisibleModelGroup(self)
-        self._batch = default_batch
-
-    @property
-    def render_group(self):
-        return self._render_group
-
     @property
     def batch(self):
-        return self._batch
-
-    @property
-    def screen_x(self):
-        return self.x
-
-    @property
-    def screen_y(self):
-        return self.y
+        return model_batch

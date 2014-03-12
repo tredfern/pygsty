@@ -20,28 +20,15 @@ class TestBaseModel(unittest.TestCase):
         m = pygsty.models.BaseModel(position=(10, 32))
         self.assertEqual( m.position, (10, 32) )
 
+    def test_models_are_added_to_the_global_repository(self):
+        m = pygsty.models.BaseModel()
+        self.assertTrue(m in pygsty.models.model_list)
 
-class TestVisibleModel(unittest.TestCase):
-    def test_each_model_gets_its_own_group(self):
-        model1 = pygsty.models.VisibleModel()
-        model2 = pygsty.models.VisibleModel()
-
-        self.assertNotEqual( model1.render_group, model2.render_group)
-
-
-    def test_model_group_is_set_to_the_model_in_question(self):
-        model = pygsty.models.VisibleModel()
-        self.assertEqual( model.render_group.model, model)
-
-    def test_models_start_in_the_default_batch(self):
-        model = pygsty.models.VisibleModel()
-        self.assertEqual( model.batch, pygsty.models.default_batch )
-
-
-    def test_screen_coordinates_default_to_standard_position(self):
-        model = pygsty.models.VisibleModel(position=(30, 40) )
-        self.assertEqual(model.screen_x, 30 )
-        self.assertEqual(model.screen_y, 40 )
+    def test_killing_models_removes_them_from_the_list(self):
+        m = pygsty.models.BaseModel()
+        self.assertTrue(m in pygsty.models.model_list)
+        m.kill()
+        self.assertTrue(m not in pygsty.models.model_list)
 
 class TestSpriteModel(unittest.TestCase):
     pass
