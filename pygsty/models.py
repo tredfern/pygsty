@@ -3,16 +3,15 @@ import pygsty.graphics
 import pyglet.graphics
 
 model_batch = pygsty.graphics.batches.create_batch()
-model_list = set()
 
 def render_models():
     model_batch.draw()
 
 def track_model(m):
-    model_list.add(m)
+    model_repository.add(m)
 
 def remove_model(m):
-    model_list.remove(m)
+    model_repository.remove(m)
 
 def background():
     return pygsty.graphics.background_group
@@ -66,3 +65,18 @@ class BaseModel():
     @property
     def batch(self):
         return model_batch
+
+class ModelRepository():
+    def __init__(self):
+        self._global_set = set()
+
+    def add(self, model):
+        self._global_set.add(model)
+
+    def remove(self, model):
+        self._global_set.remove(model)
+
+    def __contains__(self, model):
+        return model in self._global_set
+
+model_repository = ModelRepository()
