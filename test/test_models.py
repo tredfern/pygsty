@@ -7,8 +7,11 @@ from pygsty.models import *
 class MockSprite():
     def __init__(self, image, x, y, batch, group):
         self.group = group
+        self.x = x
+        self.y = y
 
 pyglet.sprite.Sprite = MockSprite
+set_repository_size(100, 100)
 
 class TestBaseModel(unittest.TestCase):
     def test_models_start_at_position_zero_zero(self):
@@ -52,11 +55,48 @@ class TestBaseModel(unittest.TestCase):
         m.kill()
         self.assertTrue(m.sprite.delete.called, "Sprite not cleaned up")
 
+    def test_it_can_translate_screen_coordinates_based_on_multiplier(self):
+        m = BaseModel()
+        m.screen_offset_x = 10
+        m.screen_offset_y = 20
+        m.initSprite("some image", pygsty.models.background())
+
+        m.moveTo(32, 12)
+
+        self.assertEqual(320, m.screen_x)
+        self.assertEqual(240, m.screen_y)
+        self.assertEqual(320, m._sprite.x)
+        self.assertEqual(240, m._sprite.y)
+
 class TestModelRepository(unittest.TestCase):
     def test_it_can_track_a_model(self):
         m = BaseModel()
         repo = ModelRepository()
+        repo.set_position_set_size(10, 10)
         repo.add(m)
         self.assertTrue(m in repo)
         repo.remove(m)
         self.assertTrue(m not in repo)
+
+    def test_it_can_be_setup_with_a_specific_size(self):
+        set_repository_size(2000, 3000)
+        self.assertEqual(2000, model_repository.position_set_width)
+        self.assertEqual(3000, model_repository.position_set_height)
+
+    def test_it_tracks_the_position_of_elements(self):
+        m1 = BaseModel(position=(10, 20))
+        m2 = BaseModel(position=(10, 20))
+        m3 = BaseModel(position=(25, 30))
+        list1 = model_repository.find_by_position((10, 20))
+        self.assertEqual([m1, m2], list1)
+        list2 = model_repository.find_by_position((25, 30))
+        self.assertEqual([m3], list2)
+        empty = model_repository.find_by_position((8, 10))
+        self.assertEqual([], empty)
+
+    def test_it_can_the_closest_model_to_a_position(self):
+        m = BaseModel(position=(10, 10))
+        m2 = BaseModel(position=(50, 51))
+
+        nearest = model_repository.find_nearest((20, 12), 20)
+        self.assertEqual([m], nearest)
