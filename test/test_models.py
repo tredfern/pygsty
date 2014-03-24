@@ -100,3 +100,24 @@ class TestModelRepository(unittest.TestCase):
 
         nearest = model_repository.find_nearest((20, 12), 20)
         self.assertEqual([m], nearest)
+
+        nearest = model_repository.find_nearest(pygsty.euclid.Point2(20, 12), 20)
+        self.assertEqual([m], nearest)
+
+    def test_it_finds_the_following_location(self):
+        model_repository.clear()
+        m = BaseModel(position=(12,12))
+        n = model_repository.find_nearest((10, 10), 10)
+
+        self.assertEqual([m], n)
+
+    def test_it_can_use_a_match_function_to_choose_object(self):
+        m = BaseModel(position=(12,12))
+        m2 = BaseModel(position=(12,12))
+
+        def match_function(test_object):
+            pygsty.logger.debug("calling match function")
+            return test_object == m
+
+        n = model_repository.find_nearest((10, 10), 10, match_function)
+        self.assertEqual([m], n)

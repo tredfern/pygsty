@@ -90,13 +90,15 @@ class ModelRepository():
         self.set_position_set_size(0, 0)
 
     def add(self, model):
+        pygsty.logger.debug("Tracking model {}".format(model))
+
         self._global_set.add(model)
         self.update_model_position(model)
 
     def remove(self, model):
         self._global_set.remove(model)
 
-    def find_nearest(self, location, search_radius):
+    def find_nearest(self, location, search_radius, match_function=None):
         #Starting from location, search out until we find a match
         # By searching just the perimeter of the rectangle we are at
         start_x = location[0]
@@ -105,29 +107,27 @@ class ModelRepository():
         end_y = start_y
         search_level = 1
         found_object = None
+        pygsty.logger.debug("Finding objects within {} of {}".format(search_radius, location))
 
         while(not found_object and search_level < search_radius):
+            test_objects = []
             #Search top and bottom of rect
-            for search_x in range(start_x, end_x):
-                objects = self.find_by_position((search_x, start_y))
-                if (len(objects)):
-                    found_object = objects
-                    break
-                objects = self.find_by_position((search_x, end_y))
-                if (len(objects)):
-                    found_object = objects
-                    break
+            for search_x in range(start_x, end_x + 1):
+                test_objects += self.find_by_position((search_x, start_y))
+                test_objects += self.find_by_position((search_x, end_y))
 
-            for search_y in range(start_y, end_y):
-                objects = self.find_by_position((start_x, search_y))
-                if (len(objects)):
-                    found_object = objects
-                    break
+            for search_y in range(start_y, end_y + 1):
+                test_objects += self.find_by_position((start_x, search_y))
+                test_objects += self.find_by_position((end_x, search_y))
 
-                objects = self.find_by_position((end_x, search_y))
-                if (len(objects)):
-                    found_object = objects
-                    break
+            test_objects = set(test_objects)
+            matches = []
+            if match_function:
+                for t in test_objects:
+                    if match_function(t):
+                        matches.append(t)
+            else:
+                matches = test_objects
 
             search_level += 1
             start_x -= 1
@@ -144,11 +144,14 @@ class ModelRepository():
             if end_y > self.position_set_height:
                 end_y = self.position_set_height
 
+            if len(matches):
+                found_object = list(matches)
+
         return found_object
 
     def find_by_position(self, location):
+        pygsty.logger.debug("Getting objects at ({} , {})".format(location[0], location[1]))
         return self.__position_set[location[1]][location[0]]
-        pass
 
     def __contains__(self, model):
         return model in self._global_set
@@ -159,13 +162,17 @@ class ModelRepository():
             model.x > self.position_set_width or \
             model.x <0:
             raise Exception("Out of bounds: ({} {})".format(model.x, model.y))
+        pygsty.logger.debug("Updating {} position to ({}, {})".format(model, model.x, model.y))
         self.__position_set[model.y][model.x].append(model)
-
 
     def set_position_set_size(self, width=0, height=0):
         self.__position_set = [
             [[] for x in range(width)] for y in range(height)
         ]
+
+    def clear(self):
+        self._global_set = set()
+        self.set_position_set_size(self.position_set_width, self.position_set_height)
 
     @property
     def position_set_width(self):
