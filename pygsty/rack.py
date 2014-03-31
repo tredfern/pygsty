@@ -38,3 +38,8 @@ class Rack(pyglet.window.Window):
       for c in self._controllers:
           if c.on_key_press(symbol, modifiers):
               break
+
+  def on_key_release(self, symbol, modifiers):
+      for c in self._controllers:
+          if c.on_key_release(symbol, modifiers):
+              break

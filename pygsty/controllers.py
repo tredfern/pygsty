@@ -6,7 +6,7 @@ from math import pi
 class BaseController():
     def prepare_draw(self):
         pass
-   
+
     def draw(self):
         pass
 
@@ -19,17 +19,20 @@ class BaseController():
     def on_key_press(self, symbol, modifier):
         return False
 
+    def on_key_release(self, symbol, modifier):
+        return False
+        
 class PerformanceController(BaseController):
   def __init__(self):
     self.fps_display = pyglet.clock.ClockDisplay(font=pyglet.font.load("Arial", 24))
 
   def draw_hud(self):
     self.fps_display.draw()
-    
+
 class CameraController(BaseController):
     def __init__(self, position, scale, angle=None):
         self.camera = pygsty.camera.Camera(position, scale, angle)
-        
+
     def update(self, dt):
         self.camera.update()
 
@@ -56,5 +59,3 @@ class CameraController(BaseController):
             return False
 
         return True
-
-

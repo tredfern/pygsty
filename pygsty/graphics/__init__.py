@@ -9,3 +9,4 @@ from pygsty.graphics.primitive import *
 background_group = pyglet.graphics.OrderedGroup(0)
 middleground_group = pyglet.graphics.OrderedGroup(5)
 foreground_group = pyglet.graphics.OrderedGroup(10)
+hud_group = pyglet.graphics.OrderedGroup(100)
