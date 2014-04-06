@@ -1,6 +1,7 @@
 import pygsty.euclid
 import pygsty.graphics
 import pyglet.graphics
+from pygsty.utils import flatten
 
 model_batch = pygsty.graphics.batches.create_batch()
 
@@ -98,6 +99,28 @@ class ModelRepository():
     def remove(self, model):
         self._global_set.remove(model)
 
+    def get_neighbors(self, x, y):
+        start_x = x-1
+        start_y = y-1
+        end_x = x + 2
+        end_y = y +2
+        neighbors = []
+        for test_y in range(start_y, end_y):
+            for test_x in range(start_x, end_x):
+                if not test_x == x or not test_y == y:
+                    n = self.find_by_position((test_x, test_y))
+                    if n:
+                        neighbors.append(n)
+
+        return flatten(neighbors)
+
+    def find_all(self, match_function):
+        matches = []
+        for test in self._global_set:
+            if match_function(test):
+                matches.append(test)
+        return matches
+
     def find_nearest(self, location, search_radius, match_function=None):
         #Starting from location, search out until we find a match
         # By searching just the perimeter of the rectangle we are at
@@ -151,7 +174,15 @@ class ModelRepository():
 
     def find_by_position(self, location):
         pygsty.logger.debug("Getting objects at ({} , {})".format(location[0], location[1]))
-        return self.__position_set[location[1]][location[0]]
+        if location[1] < 0 or location[1] >= self.position_set_height:
+            return []
+        elif location[0] < 0 or location[0] >= self.position_set_width:
+            return []
+        else:
+            return self.__position_set[location[1]][location[0]]
+
+    def is_vacant(self, location):
+        return not len(self.find_by_position(location))
 
     def __contains__(self, model):
         return model in self._global_set

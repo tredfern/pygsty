@@ -14,6 +14,9 @@ pyglet.sprite.Sprite = MockSprite
 set_repository_size(100, 100)
 
 class TestBaseModel(unittest.TestCase):
+    def setUp(self):
+        model_repository.clear()
+
     def test_models_start_at_position_zero_zero(self):
         m = BaseModel()
         self.assertEqual( m.position, pygsty.euclid.Point2(0, 0) )
@@ -69,6 +72,9 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(240, m._sprite.y)
 
 class TestModelRepository(unittest.TestCase):
+    def setUp(self):
+        model_repository.clear()
+
     def test_it_can_track_a_model(self):
         m = BaseModel()
         repo = ModelRepository()
@@ -94,7 +100,17 @@ class TestModelRepository(unittest.TestCase):
         empty = model_repository.find_by_position((8, 10))
         self.assertEqual([], empty)
 
+    def test_find_by_position_returns_empty_list_for_negative_values(self):
+        self.assertEqual([], model_repository.find_by_position((-1, 2)))
+        self.assertEqual([], model_repository.find_by_position((2, -1)))
+
+    def test_find_by_position_returns_empty_list_for_out_of_range_values(self):
+        self.assertEqual([], model_repository.find_by_position((20000, 2)))
+        self.assertEqual([], model_repository.find_by_position((2, 20000)))
+        self.assertEqual([], model_repository.find_by_position((model_repository.position_set_width, model_repository.position_set_height)))
+
     def test_it_can_the_closest_model_to_a_position(self):
+
         m = BaseModel(position=(10, 10))
         m2 = BaseModel(position=(50, 51))
 
@@ -105,7 +121,6 @@ class TestModelRepository(unittest.TestCase):
         self.assertEqual([m], nearest)
 
     def test_it_finds_the_following_location(self):
-        model_repository.clear()
         m = BaseModel(position=(12,12))
         n = model_repository.find_nearest((10, 10), 10)
 
@@ -121,3 +136,36 @@ class TestModelRepository(unittest.TestCase):
 
         n = model_repository.find_nearest((10, 10), 10, match_function)
         self.assertEqual([m], n)
+
+    def test_it_can_return_neighbors_of_a_location(self):
+        m = BaseModel(position=(10, 9))
+        m2 = BaseModel(position=(11, 11))
+        m3 = BaseModel(position=(9,11))
+        missing = BaseModel(position=(12, 12))
+        target_loc = BaseModel(position=(10, 10))
+        neighbors = model_repository.get_neighbors(10, 10)
+        self.assertTrue(m in neighbors)
+        self.assertTrue(m2 in neighbors)
+        self.assertTrue(m3 in neighbors)
+        self.assertFalse(missing in neighbors)
+        self.assertFalse(target_loc in neighbors)
+
+    def test_it_returns_if_a_location_is_empty(self):
+        m = BaseModel(position=(20, 20))
+        self.assertTrue(model_repository.is_vacant((21, 21)))
+        self.assertFalse(model_repository.is_vacant((20, 20)))
+
+    def test_it_does_not_blow_up_finding_edge_neighbors(self):
+        n = model_repository.get_neighbors(20000,20000)
+        self.assertEqual([], n)
+
+    def test_it_can_find_any_by_a_matching_function(self):
+        m = BaseModel(position=(10, 20))
+        m2 = BaseModel(position=(11, 22))
+        m3 = BaseModel(position=(14, 11))
+
+        def test_match(test_obj):
+            return test_obj == m
+
+        matches = model_repository.find_all(test_match)
+        self.assertEqual([m], matches)
