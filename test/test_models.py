@@ -71,6 +71,17 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(320, m._sprite.x)
         self.assertEqual(240, m._sprite.y)
 
+    def test_there_are_basic_move_controls_to_make_things_easier(self):
+        m = BaseModel(position=(20, 20))
+        m.move_up()
+        self.assertEqual(21, m.y)
+        m.move_down()
+        self.assertEqual(20, m.y)
+        m.move_right()
+        self.assertEqual(21, m.x)
+        m.move_left()
+        self.assertEqual(20, m.x)
+
 class TestModelRepository(unittest.TestCase):
     def setUp(self):
         model_repository.clear()

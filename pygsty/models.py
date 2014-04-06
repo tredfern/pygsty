@@ -81,6 +81,18 @@ class BaseModel():
             self.sprite.x = self.screen_x
             self.sprite.y = self.screen_y
 
+    def move_up(self):
+        self.moveTo(self.x, self.y + 1)
+
+    def move_down(self):
+        self.moveTo(self.x, self.y - 1)
+
+    def move_right(self):
+        self.moveTo(self.x + 1, self.y)
+
+    def move_left(self):
+        self.moveTo(self.x - 1, self.y)
+
     @property
     def batch(self):
         return model_batch
